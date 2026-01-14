@@ -151,7 +151,18 @@ a:hover{
 </div>
 
 <audio id="music" loop>
-  <source src="music.mp3" type="audio/mpeg">
+  <script>
+const music = document.getElementById("music");
+let started = false;
+
+function startSite(){
+  if(started) return;
+  music.volume = 0.5;
+  music.play().catch(e => console.log(e));
+  started = true;
+  document.getElementById("enter").style.display = "none";
+}
+</script>
 </audio>
 
 <script>
@@ -174,20 +185,11 @@ setInterval(updateTime,1000);
 updateTime();
 
 // MUSIC
-<script>
-const music = document.getElementById("music");
-let started = false;
-
-function startSite(){
-  if(started) return;
-  music.volume = 0.5;
-  music.play();
-  started = true;
-
-  document.getElementById("enter").style.display = "none";
+let on=false;
+function toggleMusic(){
+  on?music.pause():music.play();
+  on=!on;
 }
-</script>
-
 
 // PARTICLES
 const c=document.getElementById("particles");
