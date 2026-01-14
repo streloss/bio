@@ -215,6 +215,33 @@ for(let i=0;i<40;i++){
   document.body.appendChild(s);
 }
 </script>
+  <script>
+const timeEl = document.getElementById("time");
+const statusEl = document.getElementById("status");
+
+function updateTime(){
+  const now = new Date(
+    new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
+  );
+
+  const h = now.getHours();
+  const m = now.getMinutes().toString().padStart(2, "0");
+
+  timeEl.textContent = `${h}:${m}`;
+
+  if (h >= 7 && h <= 23) {
+    statusEl.textContent = "⚡ Я не сплю";
+    statusEl.className = "status awake";
+  } else {
+    statusEl.textContent = "😴 Я сплю";
+    statusEl.className = "status sleep";
+  }
+}
+
+setInterval(updateTime, 1000);
+updateTime();
+</script>
+
 
 </body>
 </html>
