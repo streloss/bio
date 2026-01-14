@@ -174,11 +174,20 @@ setInterval(updateTime,1000);
 updateTime();
 
 // MUSIC
-let on=false;
-function toggleMusic(){
-  on?music.pause():music.play();
-  on=!on;
+<script>
+const music = document.getElementById("music");
+let started = false;
+
+function startSite(){
+  if(started) return;
+  music.volume = 0.5;
+  music.play();
+  started = true;
+
+  document.getElementById("enter").style.display = "none";
 }
+</script>
+
 
 // PARTICLES
 const c=document.getElementById("particles");
