@@ -1,177 +1,226 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>14swag</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>14swag</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Шрифт -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
 
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(120deg, #0f0f0f, #1a1a1a);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+body{
+  height:100vh;
+  background:#050505;
+  overflow:hidden;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .card {
-      background: rgba(20, 20, 20, 0.85);
-      border-radius: 20px;
-      padding: 30px;
-      width: 340px;
-      text-align: center;
-      box-shadow: 0 0 40px rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
-    }
+/* BLUR BACKGROUND */
+.bg{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 20%, #1a1a1a, transparent 40%),
+    radial-gradient(circle at 80% 80%, #111, transparent 40%);
+  filter: blur(60px);
+  z-index:-2;
+}
 
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #444;
-      margin-bottom: 15px;
-    }
+/* PARTICLES */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
 
-    h1 {
-      margin: 10px 0 5px;
-      font-size: 26px;
-      font-weight: 800;
-    }
+/* CARD */
+.card{
+  width:340px;
+  padding:30px;
+  border-radius:22px;
+  background:rgba(15,15,15,0.75);
+  backdrop-filter: blur(18px);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 0 40px rgba(0,0,0,.7);
+  text-align:center;
+  animation:fadeUp 1s ease;
+}
 
-    .username {
-      color: #aaa;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:none}
+}
 
-    .info {
-      font-size: 14px;
-      margin: 6px 0;
-    }
+.avatar{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(255,255,255,0.15);
+  margin-bottom:14px;
+}
 
-    .status {
-      margin-top: 10px;
-      font-weight: 600;
-    }
+h1{
+  font-size:28px;
+  font-weight:800;
+}
 
-    .sleep {
-      color: #ff5e5e;
-    }
+.tag{
+  font-size:14px;
+  color:#aaa;
+  margin-bottom:16px;
+}
 
-    .awake {
-      color: #5eff9a;
-    }
+.info{
+  font-size:14px;
+  margin:6px 0;
+}
 
-    .buttons {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+.status.awake{color:#5eff9a}
+.status.sleep{color:#ff6b6b}
 
-    .btn {
-      background: #2a2a2a;
-      padding: 12px;
-      border-radius: 12px;
-      color: white;
-      text-decoration: none;
-      transition: 0.2s;
-      font-weight: 600;
-    }
+.links{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 
-    .btn:hover {
-      background: #3a3a3a;
-      transform: scale(1.02);
-    }
+a{
+  text-decoration:none;
+  color:white;
+  padding:12px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.05);
+  transition:.2s;
+  font-weight:600;
+}
 
-    .music-btn {
-      margin-top: 15px;
-      background: #1f1f1f;
-      border: none;
-      color: white;
-      padding: 10px;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-  </style>
+a:hover{
+  background:rgba(255,255,255,0.12);
+  transform:scale(1.03);
+}
+
+.music{
+  margin-top:14px;
+  background:rgba(255,255,255,0.04);
+  border:none;
+  color:white;
+  padding:10px;
+  border-radius:14px;
+  cursor:pointer;
+}
+
+/* SNOW */
+.snow{
+  position:fixed;
+  top:-10px;
+  color:white;
+  font-size:14px;
+  animation:fall linear infinite;
+}
+
+@keyframes fall{
+  to{transform:translateY(110vh)}
+}
+</style>
 </head>
 <body>
 
-  <div class="card">
-    <!-- Аватар -->
-    <img src="avatar.jpg" alt="avatar" class="avatar">
+<div class="bg"></div>
+<canvas id="particles"></canvas>
 
-    <h1>14swag</h1>
-    <div class="username">@irlswag14</div>
+<div class="card">
+  <img src="avatar.jpg" class="avatar">
+  <h1>14swag</h1>
+  <div class="tag">@14swag</div>
 
-    <div class="info">🕒 Tokyo time: <span id="time">--:--</span></div>
-    <div class="status" id="status">...</div>
+  <div class="info">🕒 Tokyo time: <span id="time">--:--</span></div>
+  <div id="status" class="status">...</div>
 
-    <div class="buttons">
-      <a class="btn" href="https://t.me/HH_KAKON_TO_XD" target="_blank">Telegram</a>
-      <a class="btn" href="#" target="_blank">TikTok</a>
-      <a class="btn" href="#" target="_blank">GitHub</a>
-    </div>
-
-    <button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
+  <div class="links">
+    <a href="https://t.me/irlswag14" target="_blank">Telegram</a>
   </div>
 
-  <!-- Музыка -->
-  <audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+  <button class="music" onclick="toggleMusic()">🎵 Music</button>
+</div>
 
-  <script>
-    const timeEl = document.getElementById("time");
-    const statusEl = document.getElementById("status");
-    const music = document.getElementById("bgMusic");
-    let musicOn = false;
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
-    function updateTokyoTime() {
-      const now = new Date();
+<script>
+// TIME + SLEEP
+function updateTime(){
+  const now=new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Tokyo"}));
+  const h=now.getHours();
+  const m=now.getMinutes().toString().padStart(2,"0");
+  time.textContent=`${h}:${m}`;
 
-      const tokyoTime = new Date(
-        now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
-      );
+  if(h>=0 && h<7){
+    status.textContent="😴 Я сплю";
+    status.className="status sleep";
+  }else{
+    status.textContent="⚡ Я не сплю";
+    status.className="status awake";
+  }
+}
+setInterval(updateTime,1000);
+updateTime();
 
-      const h = tokyoTime.getHours();
-      const m = tokyoTime.getMinutes().toString().padStart(2, "0");
+// MUSIC
+let on=false;
+function toggleMusic(){
+  on?music.pause():music.play();
+  on=!on;
+}
 
-      timeEl.textContent = `${h}:${m}`;
+// PARTICLES
+const c=document.getElementById("particles");
+const ctx=c.getContext("2d");
+function resize(){c.width=innerWidth;c.height=innerHeight}
+resize();onresize=resize;
 
-      // Логика сна
-      if (h === 0 && m >= 1 || h >= 1 && h <= 6 || (h === 6 && m <= 59)) {
-        statusEl.textContent = "😴 Я сплю";
-        statusEl.className = "status sleep";
-      } else {
-        statusEl.textContent = "⚡ Я не сплю";
-        statusEl.className = "status awake";
-      }
-    }
+let p=Array.from({length:70},()=>({
+  x:Math.random()*c.width,
+  y:Math.random()*c.height,
+  r:Math.random()*2+1,
+  dx:(Math.random()-.5)*0.3,
+  dy:(Math.random()-.5)*0.3
+}));
 
-    function toggleMusic() {
-      if (musicOn) {
-        music.pause();
-      } else {
-        music.play();
-      }
-      musicOn = !musicOn;
-    }
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle="rgba(255,255,255,.6)";
+  p.forEach(o=>{
+    o.x+=o.dx;o.y+=o.dy;
+    if(o.x<0||o.x>c.width)o.dx*=-1;
+    if(o.y<0||o.y>c.height)o.dy*=-1;
+    ctx.beginPath();
+    ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
 
-    updateTokyoTime();
-    setInterval(updateTokyoTime, 1000);
-  </script>
+// SNOW
+for(let i=0;i<40;i++){
+  let s=document.createElement("div");
+  s.className="snow";
+  s.textContent="❄";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=5+Math.random()*5+"s";
+  s.style.opacity=Math.random();
+  s.style.fontSize=10+Math.random()*10+"px";
+  document.body.appendChild(s);
+}
+</script>
 
 </body>
 </html>
