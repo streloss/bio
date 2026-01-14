@@ -175,7 +175,7 @@ function updateTime(){
   const h=now.getHours();
   const m=now.getMinutes().toString().padStart(2,"0");
   time.textContent=`${h}:${m}`;
-  status.textContent=h<7?"😴 Я сплю":"⚡ Я не сплю";
+  status.textContent=h<7?"😴 не в сети":"⚡ в сети";
   status.className="status "+(h<7?"sleep":"awake");
 }
 setInterval(updateTime,1000);
