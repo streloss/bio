@@ -151,20 +151,21 @@ a:hover{
 </div>
 
 <audio id="music" loop>
-  <script>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+<script>
 const music = document.getElementById("music");
 let started = false;
 
 function startSite(){
   if(started) return;
+
   music.volume = 0.5;
-  music.play().catch(e => console.log(e));
+  music.play();
   started = true;
+
   document.getElementById("enter").style.display = "none";
 }
-</script>
-</audio>
-
 <script>
 // TIME + SLEEP
 function updateTime(){
