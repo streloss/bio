@@ -1,295 +1,462 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>14swag</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>14swag</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Персональная страница 14swag">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #050505;
+            --color-card-bg: rgba(15, 15, 15, 0.75);
+            --color-border: rgba(255, 255, 255, 0.08);
+            --color-text: #fff;
+            --color-text-dim: #aaa;
+            --color-awake: #5eff9a;
+            --color-sleep: #ff6b6b;
+            --color-tg: #229ED9;
+            --color-steam: #171a21;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+        body {
+            min-height: 100vh;
+            background: var(--color-bg);
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-body{
-  height:100vh;
-  background:#050505;
-  overflow:hidden;
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+        /* BLUR BACKGROUND */
+        .bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, #1a1a1a, transparent 40%),
+                radial-gradient(circle at 80% 80%, #111, transparent 40%);
+            filter: blur(60px);
+            z-index: -2;
+        }
 
-/* BLUR */
-.bg{
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 20%, #1a1a1a, transparent 40%),
-    radial-gradient(circle at 80% 80%, #111, transparent 40%);
-  filter: blur(60px);
-  z-index:-2;
-}
+        /* PARTICLES CANVAS */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
 
-/* PARTICLES */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-}
+        /* ENTER SCREEN */
+        #enter {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: 800;
+            user-select: none;
+            transition: opacity 0.5s ease;
+        }
+        #enter:hover {
+            background: #111;
+        }
 
-/* CARD */
-.card{
-  width:340px;
-  padding:30px;
-  border-radius:22px;
-  background:rgba(15,15,15,0.75);
-  backdrop-filter: blur(18px);
-  border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 0 40px rgba(0,0,0,.7);
-  text-align:center;
-  animation:fadeUp 1s ease;
-}
+        /* CARD */
+        .card {
+            width: 340px;
+            padding: 30px;
+            border-radius: 22px;
+            background: var(--color-card-bg);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--color-border);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            animation: fadeUp 0.8s ease-out;
+        }
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:none}
-}
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.avatar{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid rgba(255,255,255,0.15);
-  margin-bottom:14px;
-}
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            margin-bottom: 14px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-h1{font-size:28px;font-weight:800}
-.tag{font-size:14px;color:#aaa;margin-bottom:16px}
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
 
-.info{font-size:14px;margin:6px 0}
-.status.awake{color:#5eff9a}
-.status.sleep{color:#ff6b6b}
+        .tag {
+            font-size: 14px;
+            color: var(--color-text-dim);
+            margin-bottom: 20px;
+        }
 
-.links{
-  margin-top:20px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
+        .info {
+            font-size: 14px;
+            margin: 8px 0;
+        }
 
-a{
-  text-decoration:none;
-  color:white;
-  padding:12px;
-  border-radius:14px;
-  background:rgba(255,255,255,0.05);
-  transition:.2s;
-  font-weight:600;
-}
-a:hover{background:rgba(255,255,255,0.12);transform:scale(1.03)}
+        .status {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 8px 0 20px;
+        }
+        .status.awake {
+            color: var(--color-awake);
+        }
+        .status.sleep {
+            color: var(--color-sleep);
+        }
 
-.music{
-  margin-top:14px;
-  background:rgba(255,255,255,0.04);
-  border:none;
-  color:white;
-  padding:10px;
-  border-radius:14px;
-  cursor:pointer;
-}
+        /* ICON BUTTONS */
+        .links.icons {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 10px;
+        }
 
-/* SNOW */
-.snow{
-  position:fixed;
-  top:-10px;
-  animation:fall linear infinite;
-}
-@keyframes fall{to{transform:translateY(110vh)}}
+        .icon-btn {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            overflow: hidden; /* Для корректного отображения изображений */
+        }
 
-/* ICON BUTTONS */
-.links.icons{
-  flex-direction:row;
-  justify-content:center;
-  gap:14px;
-}
+        .icon-btn img {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
 
-.icon-btn{
-  width:54px;
-  height:54px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:16px;
-  transition:.25s;
-}
+        .icon-btn.tg {
+            background: var(--color-tg);
+        }
+        .icon-btn.tg:hover {
+            background: #1c8cc4;
+            transform: scale(1.08) rotate(5deg);
+        }
+        .icon-btn.tg:hover img {
+            transform: scale(1.1);
+        }
 
-.icon-btn svg{
-  width:26px;
-  height:26px;
-  fill:white;
-}
+        .icon-btn.steam {
+            background: var(--color-steam);
+        }
+        .icon-btn.steam:hover {
+            background: #2a2e38;
+            transform: scale(1.08) rotate(-5deg);
+        }
+        .icon-btn.steam:hover img {
+            transform: scale(1.1);
+        }
 
-/* Telegram */
-.icon-btn.tg{
-  background:#229ED9;
-}
-.icon-btn.tg:hover{
-  background:#1c8cc4;
-  transform:scale(1.08);
-}
+        /* MUSIC BUTTON */
+        .music {
+            margin-top: 24px;
+            background: rgba(255, 255, 255, 0.07);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .music:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .music:active {
+            transform: scale(0.98);
+        }
 
-/* Steam */
-.icon-btn.steam{
-  background:#171a21;
-}
-.icon-btn.steam:hover{
-  background:#2a2e38;
-  transform:scale(1.08);
-}
+        /* SNOWFLAKES */
+        .snow {
+            position: fixed;
+            top: -10px;
+            color: #e0f2fe;
+            pointer-events: none;
+            user-select: none;
+            animation: fall linear infinite;
+            z-index: 999;
+        }
 
-</style>
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- ENTER SCREEN -->
+    <div id="enter">
+        CLICK TO ENTER
+    </div>
 
-<!-- ENTER SCREEN -->
-<div id="enter" onclick="startSite()" style="
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999;
-cursor:pointer;
-font-size:24px;
-font-weight:800;
-">
-CLICK TO ENTER
-</div>
+    <div class="bg"></div>
+    <canvas id="particles"></canvas>
 
-<div class="bg"></div>
-<canvas id="particles"></canvas>
+    <!-- MAIN CARD -->
+    <div class="card">
+        <img src="avatar.jpg" class="avatar" alt="Аватар 14swag" onerror="this.style.display='none'">
+        <h1>14swag</h1>
+        <div class="tag">@14swag</div>
 
-<div class="card">
-  <img src="avatar.jpg" class="avatar">
-  <h1>14swag</h1>
-  <div class="tag">@14swag</div>
+        <div class="info">🕒 Время в Токио: <span id="time">--:--</span></div>
+        <div id="status" class="status">Загрузка...</div>
 
-  <div class="info">🕒 Tokyo time: <span id="time">--:--</span></div>
-  <div id="status" class="status">...</div>
+        <div class="links icons">
+            <a class="icon-btn tg" href="https://t.me/irlswag14" target="_blank" title="Telegram" aria-label="Telegram">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/1024px-Telegram_2019_Logo.svg.png" alt="Telegram">
+            </a>
+            <a class="icon-btn steam" href="https://steamcommunity.com/id/strelos/" target="_blank" title="Steam" aria-label="Steam">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/1024px-Steam_icon_logo.svg.png" alt="Steam">
+            </a>
+        </div>
 
-<div class="links icons">
-  <a class="icon-btn tg" href="https://t.me/irlswag14" target="_blank" title="Telegram">
-    <svg viewBox="0 0 24 24"><path d="M9.04 15.44 8.7 19.3c.5 0 .72-.22.98-.48l2.35-2.23 4.87 3.56c.9.5 1.54.24 1.77-.83l3.2-15.02h0c.28-1.3-.47-1.82-1.33-1.5L1.4 9.3c-1.28.5-1.26 1.2-.23 1.52l4.6 1.43L17.4 5.4c.55-.33 1.05-.15.64.2Z"/></svg>
-  </a>
+        <button class="music" onclick="toggleMusic()" aria-label="Управление музыкой">Приостановить / Возобновить</button>
+    </div>
 
-  <a class="icon-btn steam" href="https://steamcommunity.com/id/strelos/" target="_blank" title="Steam">
-    <svg viewBox="0 0 24 24"><path d="M12 0a12 12 0 0 0-3.77 23.4l-1.9-6.2a3.5 3.5 0 1 1 3.47-5.1l3.8 1.6a5 5 0 1 0 4.4-6.9l-3.9-1.6A6.5 6.5 0 1 1 12 0Z"/></svg>
-  </a>
-</div>
+    <audio id="music" loop preload="metadata">
+        <source src="pathetic240px_-_Dancing_Nihilist_79614722.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает элемент audio.
+    </audio>
 
-  <button class="music" onclick="toggleMusic()">Pause/Play</button>
-</div>
+    <script>
+        // === ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ И ЭЛЕМЕНТЫ ===
+        const enterScreen = document.getElementById('enter');
+        const musicElement = document.getElementById('music');
+        const timeElement = document.getElementById('time');
+        const statusElement = document.getElementById('status');
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
 
-<audio id="music" loop>
-  <source src="pathetic240px_-_Dancing_Nihilist_79614722.mp3" type="audio/mpeg">
-</audio>
+        let siteStarted = false;
+        let musicPlaying = false;
+        let particles = [];
+        let animationId = null;
 
-<script>
-const music = document.getElementById("music");
-let started=false, on=true;
+        // === ФУНКЦИЯ ИНИЦИАЛИЗАЦИИ САЙТА ===
+        function startSite() {
+            if (siteStarted) return;
+            siteStarted = true;
 
-// ENTER
-function startSite(){
-  if(started) return;
-  music.volume=0.5;
-  music.play();
-  started=true;
-  document.getElementById("enter").style.display="none";
-}
+            // 1. Плавно скрываем экран входа
+            enterScreen.style.opacity = '0';
+            setTimeout(() => {
+                enterScreen.style.display = 'none';
+            }, 500);
 
-// BUTTON
-function toggleMusic(){
-  on?music.pause():music.play();
-  on=!on;
-}
+            // 2. Пытаемся запустить музыку (с учетом политики автовоспроизведения)
+            musicElement.volume = 0.5;
+            const playPromise = musicElement.play();
 
-// TIME
-function updateTime(){
-  const now=new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Tokyo"}));
-  const h=now.getHours();
-  const m=now.getMinutes().toString().padStart(2,"0");
-  time.textContent=`${h}:${m}`;
-  status.textContent=h<7?"😴 не в сети":"⚡ в сети";
-  status.className="status "+(h<7?"sleep":"awake");
-}
-setInterval(updateTime,1000);
-updateTime();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        musicPlaying = true;
+                        console.log('Музыка запущена.');
+                    })
+                    .catch(error => {
+                        console.warn('Автовоспроизведение музыки заблокировано. Нажмите на кнопку play.', error);
+                        musicPlaying = false;
+                    });
+            }
 
-// PARTICLES
-const c=document.getElementById("particles"),ctx=c.getContext("2d");
-function resize(){c.width=innerWidth;c.height=innerHeight}
-resize();onresize=resize;
+            // 3. Инициализируем частицы (только после входа для экономии ресурсов)
+            initParticles();
+            drawParticles();
+        }
 
-let p=Array.from({length:70},()=>({
-  x:Math.random()*c.width,y:Math.random()*c.height,
-  r:Math.random()*2+1,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3
-}));
+        // === УПРАВЛЕНИЕ МУЗЫКОЙ ===
+        function toggleMusic() {
+            if (musicElement.paused) {
+                musicElement.play();
+                musicPlaying = true;
+            } else {
+                musicElement.pause();
+                musicPlaying = false;
+            }
+        }
 
-(function draw(){
-  ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle="rgba(255,255,255,.6)";
-  p.forEach(o=>{
-    o.x+=o.dx;o.y+=o.dy;
-    if(o.x<0||o.x>c.width)o.dx*=-1;
-    if(o.y<0||o.y>c.height)o.dy*=-1;
-    ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();
-  });
-  requestAnimationFrame(draw);
-})();
+        // === ОБНОВЛЕНИЕ ВРЕМЕНИ И СТАТУСА ===
+        function updateTimeAndStatus() {
+            const now = new Date();
+            // Используем Intl для более надежного перевода часового пояса
+            const tokyoTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
+            // Или как альтернатива: const tokyoTime = new Date(now.getTime() + (9 * 60 * 60 * 1000)); // UTC+9
 
-// SNOW
-for(let i=0;i<40;i++){
-  let s=document.createElement("div");
-  s.className="snow";
-  s.textContent="❄";
-  s.style.left=Math.random()*100+"vw";
-  s.style.animationDuration=5+Math.random()*5+"s";
-  s.style.opacity=Math.random();
-  s.style.fontSize=10+Math.random()*10+"px";
-  document.body.appendChild(s);
-}
-</script>
-  <script>
-const timeEl = document.getElementById("time");
-const statusEl = document.getElementById("status");
+            const hours = tokyoTime.getHours();
+            const minutes = tokyoTime.getMinutes().toString().padStart(2, '0');
 
-function updateTime(){
-  const now = new Date(
-    new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
-  );
+            timeElement.textContent = `${hours}:${minutes}`;
 
-  const h = now.getHours();
-  const m = now.getMinutes().toString().padStart(2, "0");
+            if (hours >= 7 && hours < 24) { // С 7:00 до 23:59
+                statusElement.textContent = '⚡ Я не сплю';
+                statusElement.className = 'status awake';
+            } else {
+                statusElement.textContent = '😴 Я сплю';
+                statusElement.className = 'status sleep';
+            }
+        }
 
-  timeEl.textContent = `${h}:${m}`;
+        // === СИСТЕМА ЧАСТИЦ ===
+        function initParticles() {
+            resizeCanvas();
+            particles = [];
+            const particleCount = Math.min(70, (canvas.width * canvas.height) / 15000); // Адаптивное количество
 
-  if (h >= 7 && h <= 23) {
-    statusEl.textContent = "⚡ Я не сплю";
-    statusEl.className = "status awake";
-  } else {
-    statusEl.textContent = "😴 Я сплю";
-    statusEl.className = "status sleep";
-  }
-}
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 2 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: (Math.random() - 0.5) * 0.3,
+                    alpha: Math.random() * 0.4 + 0.3
+                });
+            }
+        }
 
-setInterval(updateTime, 1000);
-updateTime();
-</script>
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
+        function drawParticles() {
+            if (!siteStarted) return; // Не рисовать, если сайт не начал работу
 
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                // Движение
+                p.x += p.dx;
+                p.y += p.dy;
+
+                // Отскок от границ
+                if (p.x <= 0 || p.x >= canvas.width) p.dx *= -1;
+                if (p.y <= 0 || p.y >= canvas.height) p.dy *= -1;
+
+                // Рисование
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+                ctx.fill();
+            });
+
+            animationId = requestAnimationFrame(drawParticles);
+        }
+
+        // === СНЕГ ===
+        function createSnowflakes() {
+            const snowContainer = document.body;
+            const flakeCount = 35;
+
+            for (let i = 0; i < flakeCount; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snow';
+                flake.textContent = '❄';
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = (5 + Math.random() * 8) + 's';
+                flake.style.animationDelay = Math.random() * -10 + 's';
+                flake.style.opacity = (Math.random() * 0.5 + 0.3).toString();
+                flake.style.fontSize = (10 + Math.random() * 12) + 'px';
+                snowContainer.appendChild(flake);
+            }
+        }
+
+        // === ИНИЦИАЛИЗАЦИЯ И СОБЫТИЯ ===
+        window.addEventListener('DOMContentLoaded', () => {
+            // Слушатель для экрана входа
+            enterScreen.addEventListener('click', startSite);
+
+            // Обновление времени каждую секунду
+            updateTimeAndStatus();
+            setInterval(updateTimeAndStatus, 1000);
+
+            // Создание снежинок
+            createSnowflakes();
+
+            // Обработчик изменения размера окна
+            window.addEventListener('resize', () => {
+                if (siteStarted) {
+                    resizeCanvas();
+                }
+            });
+
+            // Обработка ошибки аудио
+            musicElement.addEventListener('error', (e) => {
+                console.error('Ошибка загрузки аудио:', e);
+                document.querySelector('.music').textContent = 'Аудио не загружено';
+                document.querySelector('.music').style.opacity = '0.6';
+            });
+
+            // Предзагрузка изображений для иконок (опционально, для лучшего UX)
+            const iconUrls = [
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/1024px-Telegram_2019_Logo.svg.png',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/1024px-Steam_icon_logo.svg.png'
+            ];
+            
+            iconUrls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        });
+
+        // Остановка анимации при скрытии вкладки для экономии ресурсов
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            } else if (siteStarted && !animationId) {
+                drawParticles();
+            }
+        });
+    </script>
 </body>
 </html>
