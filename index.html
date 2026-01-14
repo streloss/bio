@@ -107,6 +107,48 @@ a:hover{background:rgba(255,255,255,0.12);transform:scale(1.03)}
   animation:fall linear infinite;
 }
 @keyframes fall{to{transform:translateY(110vh)}}
+
+/* ICON BUTTONS */
+.links.icons{
+  flex-direction:row;
+  justify-content:center;
+  gap:14px;
+}
+
+.icon-btn{
+  width:54px;
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:16px;
+  transition:.25s;
+}
+
+.icon-btn svg{
+  width:26px;
+  height:26px;
+  fill:white;
+}
+
+/* Telegram */
+.icon-btn.tg{
+  background:#229ED9;
+}
+.icon-btn.tg:hover{
+  background:#1c8cc4;
+  transform:scale(1.08);
+}
+
+/* Steam */
+.icon-btn.steam{
+  background:#171a21;
+}
+.icon-btn.steam:hover{
+  background:#2a2e38;
+  transform:scale(1.08);
+}
+
 </style>
 </head>
 
