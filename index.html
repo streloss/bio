@@ -20,7 +20,7 @@ body{
   justify-content:center;
 }
 
-/* BLUR BACKGROUND */
+/* BLUR */
 .bg{
   position:fixed;
   inset:0;
@@ -65,22 +65,10 @@ canvas{
   margin-bottom:14px;
 }
 
-h1{
-  font-size:28px;
-  font-weight:800;
-}
+h1{font-size:28px;font-weight:800}
+.tag{font-size:14px;color:#aaa;margin-bottom:16px}
 
-.tag{
-  font-size:14px;
-  color:#aaa;
-  margin-bottom:16px;
-}
-
-.info{
-  font-size:14px;
-  margin:6px 0;
-}
-
+.info{font-size:14px;margin:6px 0}
 .status.awake{color:#5eff9a}
 .status.sleep{color:#ff6b6b}
 
@@ -100,11 +88,7 @@ a{
   transition:.2s;
   font-weight:600;
 }
-
-a:hover{
-  background:rgba(255,255,255,0.12);
-  transform:scale(1.03);
-}
+a:hover{background:rgba(255,255,255,0.12);transform:scale(1.03)}
 
 .music{
   margin-top:14px;
@@ -120,17 +104,29 @@ a:hover{
 .snow{
   position:fixed;
   top:-10px;
-  color:white;
-  font-size:14px;
   animation:fall linear infinite;
 }
-
-@keyframes fall{
-  to{transform:translateY(110vh)}
-}
+@keyframes fall{to{transform:translateY(110vh)}}
 </style>
 </head>
+
 <body>
+
+<!-- ENTER SCREEN -->
+<div id="enter" onclick="startSite()" style="
+position:fixed;
+inset:0;
+background:black;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:999;
+cursor:pointer;
+font-size:24px;
+font-weight:800;
+">
+CLICK TO ENTER
+</div>
 
 <div class="bg"></div>
 <canvas id="particles"></canvas>
@@ -149,79 +145,63 @@ a:hover{
 
   <button class="music" onclick="toggleMusic()">🎵 Music</button>
 </div>
-  
+
 <audio id="music" loop>
   <source src="pathetic240px_-_Dancing_Nihilist_79614722.mp3" type="audio/mpeg">
 </audio>
+
 <script>
 const music = document.getElementById("music");
-let started = false;
+let started=false, on=true;
 
+// ENTER
 function startSite(){
   if(started) return;
-
-  music.volume = 0.5;
+  music.volume=0.5;
   music.play();
-  started = true;
-
-  document.getElementById("enter").style.display = "none";
+  started=true;
+  document.getElementById("enter").style.display="none";
 }
-<script>
 
-<script>
-// TIME + SLEEP
-function updateTime(){
-  const now=new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Tokyo"}));
-  const h=now.getHours();
-  const m=now.getMinutes().toString().padStart(2,"0");
-  time.textContent=`${h}:${m}`;
-
-  if(h>=0 && h<7){
-    status.textContent="😴 Я сплю";
-    status.className="status sleep";
-  }else{
-    status.textContent="⚡ Я не сплю";
-    status.className="status awake";
-  }
-}
-setInterval(updateTime,1000);
-updateTime();
-
-// MUSIC
-let on=false;
+// BUTTON
 function toggleMusic(){
   on?music.pause():music.play();
   on=!on;
 }
 
+// TIME
+function updateTime(){
+  const now=new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Tokyo"}));
+  const h=now.getHours();
+  const m=now.getMinutes().toString().padStart(2,"0");
+  time.textContent=`${h}:${m}`;
+  status.textContent=h<7?"😴 Я сплю":"⚡ Я не сплю";
+  status.className="status "+(h<7?"sleep":"awake");
+}
+setInterval(updateTime,1000);
+updateTime();
+
 // PARTICLES
-const c=document.getElementById("particles");
-const ctx=c.getContext("2d");
+const c=document.getElementById("particles"),ctx=c.getContext("2d");
 function resize(){c.width=innerWidth;c.height=innerHeight}
 resize();onresize=resize;
 
 let p=Array.from({length:70},()=>({
-  x:Math.random()*c.width,
-  y:Math.random()*c.height,
-  r:Math.random()*2+1,
-  dx:(Math.random()-.5)*0.3,
-  dy:(Math.random()-.5)*0.3
+  x:Math.random()*c.width,y:Math.random()*c.height,
+  r:Math.random()*2+1,dx:(Math.random()-.5)*.3,dy:(Math.random()-.5)*.3
 }));
 
-function draw(){
+(function draw(){
   ctx.clearRect(0,0,c.width,c.height);
   ctx.fillStyle="rgba(255,255,255,.6)";
   p.forEach(o=>{
     o.x+=o.dx;o.y+=o.dy;
     if(o.x<0||o.x>c.width)o.dx*=-1;
     if(o.y<0||o.y>c.height)o.dy*=-1;
-    ctx.beginPath();
-    ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
-    ctx.fill();
+    ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill();
   });
   requestAnimationFrame(draw);
-}
-draw();
+})();
 
 // SNOW
 for(let i=0;i<40;i++){
@@ -237,19 +217,4 @@ for(let i=0;i<40;i++){
 </script>
 
 </body>
-  <div id="enter" onclick="startSite()" style="
-position:fixed;
-inset:0;
-background:black;
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999;
-cursor:pointer;
-font-size:24px;
-font-weight:800;
-">
-CLICK TO ENTER
-</div>
-
 </html>
