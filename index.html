@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>14swag</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(120deg, #0f0f0f, #1a1a1a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(20, 20, 20, 0.85);
+      border-radius: 20px;
+      padding: 30px;
+      width: 340px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #444;
+      margin-bottom: 15px;
+    }
+
+    h1 {
+      margin: 10px 0 5px;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .username {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .info {
+      font-size: 14px;
+      margin: 6px 0;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .sleep {
+      color: #ff5e5e;
+    }
+
+    .awake {
+      color: #5eff9a;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      background: #2a2a2a;
+      padding: 12px;
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+
+    .btn:hover {
+      background: #3a3a3a;
+      transform: scale(1.02);
+    }
+
+    .music-btn {
+      margin-top: 15px;
+      background: #1f1f1f;
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Аватар -->
+    <img src="avatar.jpg" alt="avatar" class="avatar">
+
+    <h1>14swag</h1>
+    <div class="username">@irlswag14</div>
+
+    <div class="info">🕒 Tokyo time: <span id="time">--:--</span></div>
+    <div class="status" id="status">...</div>
+
+    <div class="buttons">
+      <a class="btn" href="https://t.me/HH_KAKON_TO_XD" target="_blank">Telegram</a>
+      <a class="btn" href="#" target="_blank">TikTok</a>
+      <a class="btn" href="#" target="_blank">GitHub</a>
+    </div>
+
+    <button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
+  </div>
+
+  <!-- Музыка -->
+  <audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const timeEl = document.getElementById("time");
+    const statusEl = document.getElementById("status");
+    const music = document.getElementById("bgMusic");
+    let musicOn = false;
+
+    function updateTokyoTime() {
+      const now = new Date();
+
+      const tokyoTime = new Date(
+        now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
+      );
+
+      const h = tokyoTime.getHours();
+      const m = tokyoTime.getMinutes().toString().padStart(2, "0");
+
+      timeEl.textContent = `${h}:${m}`;
+
+      // Логика сна
+      if (h === 0 && m >= 1 || h >= 1 && h <= 6 || (h === 6 && m <= 59)) {
+        statusEl.textContent = "😴 Я сплю";
+        statusEl.className = "status sleep";
+      } else {
+        statusEl.textContent = "⚡ Я не сплю";
+        statusEl.className = "status awake";
+      }
+    }
+
+    function toggleMusic() {
+      if (musicOn) {
+        music.pause();
+      } else {
+        music.play();
+      }
+      musicOn = !musicOn;
+    }
+
+    updateTokyoTime();
+    setInterval(updateTokyoTime, 1000);
+  </script>
+
+</body>
+</html>
