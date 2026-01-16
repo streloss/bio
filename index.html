@@ -245,7 +245,7 @@
         <h1>14swag</h1>
         <div class="tag">@14swag</div>
 
-        <div class="info">🕒 Время в Токио: <span id="time">--:--</span></div>
+        <div class="info">🕒 Время: <span id="time">--:--</span></div>
         <div id="status" class="status">Загрузка...</div>
 
         <div class="links icons">
@@ -261,7 +261,7 @@
     </div>
 
     <audio id="music" loop preload="metadata">
-        <source src="pathetic240px_-_Dancing_Nihilist_79614722.mp3" type="audio/mpeg">
+        <source src="overtonight_-_shotgun_80400444.mp3" type="audio/mpeg">
         Ваш браузер не поддерживает элемент audio.
     </audio>
 
@@ -335,10 +335,10 @@
             timeElement.textContent = `${hours}:${minutes}`;
 
             if (hours >= 7 && hours < 24) { // С 7:00 до 23:59
-                statusElement.textContent = '⚡ Я не сплю';
+                statusElement.textContent = 'в сети';
                 statusElement.className = 'status awake';
             } else {
-                statusElement.textContent = '😴 Я сплю';
+                statusElement.textContent = 'не в сети';
                 statusElement.className = 'status sleep';
             }
         }
