@@ -9,7 +9,7 @@
     <style>
         :root {
             --color-bg: #050505;
-            --color-card-bg: rgba(15, 15, 15, 0.75);
+            --color-card-bg: rgba(15, 15, 15, 0.85);
             --color-border: rgba(255, 255, 255, 0.08);
             --color-text: #fff;
             --color-text-dim: #aaa;
@@ -17,6 +17,8 @@
             --color-sleep: #ff6b6b;
             --color-tg: #229ED9;
             --color-steam: #171a21;
+            --color-music-bg: rgba(40, 40, 40, 0.7);
+            --color-music-accent: #6C63FF;
         }
 
         * {
@@ -37,7 +39,37 @@
             position: relative;
         }
 
-        /* BLUR BACKGROUND */
+        /* GRADIENT BACKGROUND WITH IMAGE */
+        .gradient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            background: 
+                linear-gradient(135deg, 
+                    rgba(5, 5, 5, 0.9) 0%, 
+                    rgba(5, 5, 5, 0.7) 50%, 
+                    rgba(5, 5, 5, 0.4) 100%),
+                url('https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') right center/cover;
+            background-blend-mode: overlay;
+            animation: bg-pulse 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bg-pulse {
+            0% {
+                opacity: 0.8;
+                background-position: right center;
+            }
+            50% {
+                opacity: 0.9;
+                background-position: right 10% center;
+            }
+            100% {
+                opacity: 1;
+                background-position: right -10% center;
+            }
+        }
+
+        /* BLUR OVERLAY */
         .bg {
             position: fixed;
             inset: 0;
@@ -46,6 +78,7 @@
                 radial-gradient(circle at 80% 80%, #111, transparent 40%);
             filter: blur(60px);
             z-index: -2;
+            opacity: 0.7;
         }
 
         /* PARTICLES CANVAS */
@@ -56,6 +89,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
+            opacity: 0.6;
         }
 
         /* ENTER SCREEN */
@@ -72,22 +106,43 @@
             font-weight: 800;
             user-select: none;
             transition: opacity 0.5s ease;
+            background: 
+                linear-gradient(135deg, #000, #222);
         }
         #enter:hover {
-            background: #111;
+            background: linear-gradient(135deg, #111, #333);
         }
 
         /* CARD */
         .card {
-            width: 340px;
+            width: 360px;
             padding: 30px;
             border-radius: 22px;
             background: var(--color-card-bg);
-            backdrop-filter: blur(18px);
+            backdrop-filter: blur(20px) saturate(180%);
             border: 1px solid var(--color-border);
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+            box-shadow: 
+                0 0 60px rgba(0, 0, 0, 0.8),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
             text-align: center;
             animation: fadeUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(108, 99, 255, 0.1), 
+                rgba(108, 99, 255, 0.05));
+            z-index: 0;
+            pointer-events: none;
         }
 
         @keyframes fadeUp {
@@ -111,35 +166,48 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
         }
 
         h1 {
             font-size: 28px;
             font-weight: 800;
             margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
         }
 
         .tag {
             font-size: 14px;
             color: var(--color-text-dim);
             margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .info {
             font-size: 14px;
             margin: 8px 0;
+            position: relative;
+            z-index: 1;
         }
 
         .status {
             font-size: 14px;
             font-weight: 600;
             margin: 8px 0 20px;
+            position: relative;
+            z-index: 1;
         }
         .status.awake {
             color: var(--color-awake);
+            text-shadow: 0 0 10px rgba(94, 255, 154, 0.3);
         }
         .status.sleep {
             color: var(--color-sleep);
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
         }
 
         /* ICON BUTTONS */
@@ -149,6 +217,8 @@
             justify-content: center;
             gap: 16px;
             margin-top: 10px;
+            position: relative;
+            z-index: 1;
         }
 
         .icon-btn {
@@ -160,7 +230,9 @@
             border-radius: 16px;
             transition: all 0.25s ease;
             text-decoration: none;
-            overflow: hidden; /* Для корректного отображения изображений */
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
 
         .icon-btn img {
@@ -172,10 +244,12 @@
 
         .icon-btn.tg {
             background: var(--color-tg);
+            box-shadow: 0 4px 15px rgba(34, 158, 217, 0.3);
         }
         .icon-btn.tg:hover {
             background: #1c8cc4;
             transform: scale(1.08) rotate(5deg);
+            box-shadow: 0 6px 20px rgba(34, 158, 217, 0.5);
         }
         .icon-btn.tg:hover img {
             transform: scale(1.1);
@@ -183,33 +257,154 @@
 
         .icon-btn.steam {
             background: var(--color-steam);
+            box-shadow: 0 4px 15px rgba(23, 26, 33, 0.3);
         }
         .icon-btn.steam:hover {
             background: #2a2e38;
             transform: scale(1.08) rotate(-5deg);
+            box-shadow: 0 6px 20px rgba(23, 26, 33, 0.5);
         }
         .icon-btn.steam:hover img {
             transform: scale(1.1);
         }
 
-        /* MUSIC BUTTON */
-        .music {
-            margin-top: 24px;
-            background: rgba(255, 255, 255, 0.07);
+        /* MUSIC PLAYER INTEGRATED IN BACKGROUND */
+        .music-background {
+            position: relative;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 18px;
+            background: var(--color-music-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            text-align: left;
+            z-index: 1;
+        }
+
+        .music-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--color-music-accent));
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .music-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-music-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(108, 99, 255, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(108, 99, 255, 0);
+            }
+        }
+
+        .music-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        .music-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .music-subtitle {
+            font-size: 12px;
+            color: var(--color-text-dim);
+            margin-top: 2px;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-btn {
+            background: rgba(255, 255, 255, 0.1);
             border: none;
             color: white;
             padding: 12px 24px;
-            border-radius: 14px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            width: 100%;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            justify-content: center;
+            margin-right: 10px;
         }
-        .music:hover {
-            background: rgba(255, 255, 255, 0.12);
+
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
         }
-        .music:active {
-            transform: scale(0.98);
+
+        .music-btn:active {
+            transform: translateY(0);
+        }
+
+        .music-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .volume-control {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .volume-control:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
+        }
+
+        .volume-control svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
         }
 
         /* SNOWFLAKES */
@@ -221,6 +416,7 @@
             user-select: none;
             animation: fall linear infinite;
             z-index: 999;
+            opacity: 0.7;
         }
 
         @keyframes fall {
@@ -236,6 +432,8 @@
         CLICK TO ENTER
     </div>
 
+    <!-- GRADIENT BACKGROUND WITH IMAGE -->
+    <div class="gradient-bg"></div>
     <div class="bg"></div>
     <canvas id="particles"></canvas>
 
@@ -245,7 +443,7 @@
         <h1>14swag</h1>
         <div class="tag">@14swag</div>
 
-        <div class="info">🕒 Время: <span id="time">--:--</span></div>
+        <div class="info">🕒 Время в Токио: <span id="time">--:--</span></div>
         <div id="status" class="status">Загрузка...</div>
 
         <div class="links icons">
@@ -257,11 +455,40 @@
             </a>
         </div>
 
-        <button class="music" onclick="toggleMusic()" aria-label="Управление музыкой">Приостановить / Возобновить</button>
+        <!-- MUSIC PLAYER IN BACKGROUND -->
+        <div class="music-background">
+            <div class="music-header">
+                <div class="music-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="music-title">Dancing Nihilist</div>
+                    <div class="music-subtitle">pathetic240px</div>
+                </div>
+            </div>
+            <div class="music-controls">
+                <button class="music-btn" onclick="toggleMusic()" id="music-toggle">
+                    <svg viewBox="0 0 24 24" id="play-icon">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg viewBox="0 0 24 24" id="pause-icon" style="display: none;">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                    <span id="music-btn-text">Возобновить</span>
+                </button>
+                <div class="volume-control" onclick="toggleMute()" id="volume-btn">
+                    <svg viewBox="0 0 24 24" id="volume-icon">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
 
     <audio id="music" loop preload="metadata">
-        <source src="overtonight_-_shotgun_80400444.mp3" type="audio/mpeg">
+        <source src="pathetic240px_-_Dancing_Nihilist_79614722.mp3" type="audio/mpeg">
         Ваш браузер не поддерживает элемент audio.
     </audio>
 
@@ -273,9 +500,16 @@
         const statusElement = document.getElementById('status');
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
+        const musicToggle = document.getElementById('music-toggle');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const musicBtnText = document.getElementById('music-btn-text');
+        const volumeBtn = document.getElementById('volume-btn');
+        const volumeIcon = document.getElementById('volume-icon');
 
         let siteStarted = false;
         let musicPlaying = false;
+        let isMuted = false;
         let particles = [];
         let animationId = null;
 
@@ -291,18 +525,20 @@
             }, 500);
 
             // 2. Пытаемся запустить музыку (с учетом политики автовоспроизведения)
-            musicElement.volume = 0.3;
+            musicElement.volume = 0.5;
             const playPromise = musicElement.play();
 
             if (playPromise !== undefined) {
                 playPromise
                     .then(() => {
                         musicPlaying = true;
+                        updateMusicButton();
                         console.log('Музыка запущена.');
                     })
                     .catch(error => {
                         console.warn('Автовоспроизведение музыки заблокировано. Нажмите на кнопку play.', error);
                         musicPlaying = false;
+                        updateMusicButton();
                     });
             }
 
@@ -320,25 +556,49 @@
                 musicElement.pause();
                 musicPlaying = false;
             }
+            updateMusicButton();
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            musicElement.muted = isMuted;
+            
+            if (isMuted) {
+                volumeIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            } else {
+                volumeIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            }
+        }
+
+        function updateMusicButton() {
+            if (musicElement.paused) {
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                musicBtnText.textContent = 'Возобновить';
+                musicToggle.style.background = 'rgba(108, 99, 255, 0.2)';
+            } else {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                musicBtnText.textContent = 'Пауза';
+                musicToggle.style.background = 'rgba(108, 99, 255, 0.3)';
+            }
         }
 
         // === ОБНОВЛЕНИЕ ВРЕМЕНИ И СТАТУСА ===
         function updateTimeAndStatus() {
             const now = new Date();
-            // Используем Intl для более надежного перевода часового пояса
             const tokyoTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Tokyo' }));
-            // Или как альтернатива: const tokyoTime = new Date(now.getTime() + (9 * 60 * 60 * 1000)); // UTC+9
 
             const hours = tokyoTime.getHours();
             const minutes = tokyoTime.getMinutes().toString().padStart(2, '0');
 
             timeElement.textContent = `${hours}:${minutes}`;
 
-            if (hours >= 7 && hours < 24) { // С 7:00 до 23:59
-                statusElement.textContent = 'в сети';
+            if (hours >= 7 && hours < 24) {
+                statusElement.textContent = '⚡ Я не сплю';
                 statusElement.className = 'status awake';
             } else {
-                statusElement.textContent = 'не в сети';
+                statusElement.textContent = '😴 Я сплю';
                 statusElement.className = 'status sleep';
             }
         }
@@ -347,7 +607,7 @@
         function initParticles() {
             resizeCanvas();
             particles = [];
-            const particleCount = Math.min(70, (canvas.width * canvas.height) / 15000); // Адаптивное количество
+            const particleCount = Math.min(70, (canvas.width * canvas.height) / 15000);
 
             for (let i = 0; i < particleCount; i++) {
                 particles.push({
@@ -367,20 +627,17 @@
         }
 
         function drawParticles() {
-            if (!siteStarted) return; // Не рисовать, если сайт не начал работу
+            if (!siteStarted) return;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             particles.forEach(p => {
-                // Движение
                 p.x += p.dx;
                 p.y += p.dy;
 
-                // Отскок от границ
                 if (p.x <= 0 || p.x >= canvas.width) p.dx *= -1;
                 if (p.y <= 0 || p.y >= canvas.height) p.dy *= -1;
 
-                // Рисование
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
@@ -430,11 +687,11 @@
             // Обработка ошибки аудио
             musicElement.addEventListener('error', (e) => {
                 console.error('Ошибка загрузки аудио:', e);
-                document.querySelector('.music').textContent = 'Аудио не загружено';
-                document.querySelector('.music').style.opacity = '0.6';
+                musicBtnText.textContent = 'Ошибка аудио';
+                musicToggle.style.opacity = '0.6';
             });
 
-            // Предзагрузка изображений для иконок (опционально, для лучшего UX)
+            // Предзагрузка изображений
             const iconUrls = [
                 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/1024px-Telegram_2019_Logo.svg.png',
                 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/1024px-Steam_icon_logo.svg.png'
@@ -444,9 +701,12 @@
                 const img = new Image();
                 img.src = url;
             });
+
+            // Инициализация кнопки музыки
+            updateMusicButton();
         });
 
-        // Остановка анимации при скрытии вкладки для экономии ресурсов
+        // Остановка анимации при скрытии вкладки
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 if (animationId) {
